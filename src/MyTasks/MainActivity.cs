@@ -36,6 +36,11 @@ namespace MyTasks
 					SupportFragmentManager.BeginTransaction().Replace(Resource.Id.container, new TasksFragment(), "tasksFragment").Commit();
 					return true;
 				}
+				case Resource.Id.navigation_scheduled_tasks:
+				{
+					SupportFragmentManager.BeginTransaction().Replace(Resource.Id.container, new ScheduledTasksFragment(), "scheduledTasksFragment").Commit();
+					return true;
+				}
 			}
 
 			return false;

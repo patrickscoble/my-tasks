@@ -6,4 +6,9 @@
 		android:title="@string/title_tasks"
         android:icon="@drawable/task_24" />
 
+	<item
+		android:id="@+id/navigation_scheduled_tasks"
+		android:title="@string/title_scheduled_tasks"
+		android:icon="@drawable/schedule_24" />
+
 </menu>

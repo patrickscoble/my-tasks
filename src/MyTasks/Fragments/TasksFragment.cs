@@ -2,17 +2,14 @@ using Android.Content;
 using Android.Views;
 using AndroidX.Core.View;
 using MyTasks.Adapters;
-using MyTasks.Helpers;
+using MyTasks.Models;
 
-using ListFragment = AndroidX.Fragment.App.ListFragment;
 using Task = MyTasks.Models.Task;
 
 namespace MyTasks.Fragments
 {
-	public class TasksFragment : ListFragment, IMenuProvider
+	public class TasksFragment : BaseFragment, IMenuProvider
 	{
-		private DbHelper _dbHelper { get { return ((MainActivity)Activity).DbHelper; } }
-
 		public override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -32,12 +29,6 @@ namespace MyTasks.Fragments
 		{
 			Activity.RemoveMenuProvider(this);
 			base.OnDestroy();
-		}
-
-		public override void OnViewCreated(View view, Bundle savedInstanceState)
-		{
-			base.OnViewCreated(view, savedInstanceState);
-			LoadData();
 		}
 
 		public void OnCreateMenu(IMenu menu, MenuInflater inflater)
@@ -100,13 +91,13 @@ namespace MyTasks.Fragments
 			LoadData();
 		}
 
-		public void CancelAction(object sender, DialogClickEventArgs e)
-		{
-		}
-
-		public void LoadData()
+		public override void LoadData()
 		{
 			List<Task> tasks = _dbHelper.GetAllTasks();
+
+			List<ScheduledTask> scheduledTasks = _dbHelper.GetAllScheduledTasks();
+			tasks.AddRange(scheduledTasks.Where(x => Convert.ToDateTime(x.Date) <= DateTime.Now));
+
 			TaskAdapter taskAdapter = new TaskAdapter(this, tasks, _dbHelper);
 			ListView.Adapter = taskAdapter;
 		}

@@ -1,6 +1,7 @@
 using Android.Content;
 using Android.Database;
 using Android.Database.Sqlite;
+using MyTasks.Models;
 
 using Task = MyTasks.Models.Task;
 
@@ -15,6 +16,11 @@ namespace MyTasks.Helpers
 		private static string DB_TASK_COLUMN_ID = "Id";
 		private static string DB_TASK_COLUMN_NAME = "Name";
 
+		private static string DB_TABLE_SCHEDULED_TASK = "ScheduledTask";
+		private static string DB_SCHEDULED_TASK_COLUMN_ID = "Id";
+		private static string DB_SCHEDULED_TASK_COLUMN_NAME = "Name";
+		private static string DB_SCHEDULED_TASK_COLUMN_DATE = "Date";
+
 		public DbHelper(Context context)
 			: base(context, DB_NAME, null, DB_VERSION)
 		{
@@ -24,6 +30,9 @@ namespace MyTasks.Helpers
 		{
 			string query = $@"CREATE TABLE {DB_TABLE_TASK} ({DB_TASK_COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, {DB_TASK_COLUMN_NAME} TEXT NOT NULL);";
 			db.ExecSQL(query);
+
+			query = $@"CREATE TABLE {DB_TABLE_SCHEDULED_TASK} ({DB_SCHEDULED_TASK_COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, {DB_SCHEDULED_TASK_COLUMN_NAME} TEXT NOT NULL, {DB_SCHEDULED_TASK_COLUMN_DATE} TEXT NOT NULL);";
+			db.ExecSQL(query);
 		}
 
 		public override void OnUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
@@ -31,8 +40,13 @@ namespace MyTasks.Helpers
 			string query = $"DELETE TABLE IF EXISTS {DB_TABLE_TASK}";
 			db.ExecSQL(query);
 
+			query = $"DELETE TABLE IF EXISTS {DB_TABLE_SCHEDULED_TASK}";
+			db.ExecSQL(query);
+
 			OnCreate(db);
 		}
+
+		#region Task
 
 		public List<Task> GetAllTasks()
 		{
@@ -82,5 +96,66 @@ namespace MyTasks.Helpers
 			db.Delete(DB_TABLE_TASK, $"{DB_TASK_COLUMN_ID} = ?", new string[] { id.ToString() });
 			db.Close();
 		}
+
+		#endregion Task
+		
+		#region Scheduled Task
+
+		public List<ScheduledTask> GetAllScheduledTasks()
+		{
+			List<ScheduledTask> scheduledTasks = new List<ScheduledTask>();
+			SQLiteDatabase db = this.ReadableDatabase;
+			ICursor cursor = db.Query(DB_TABLE_SCHEDULED_TASK, new string[] { DB_SCHEDULED_TASK_COLUMN_ID, DB_SCHEDULED_TASK_COLUMN_NAME, DB_SCHEDULED_TASK_COLUMN_DATE }, null, null, null, null, null);
+
+			while (cursor.MoveToNext())
+			{
+				int idIndex = cursor.GetColumnIndex(DB_SCHEDULED_TASK_COLUMN_ID);
+				int id = cursor.GetInt(idIndex);
+
+				int nameIndex = cursor.GetColumnIndex(DB_SCHEDULED_TASK_COLUMN_NAME);
+				string name = cursor.GetString(nameIndex) ?? string.Empty;
+
+				int dateIndex = cursor.GetColumnIndex(DB_SCHEDULED_TASK_COLUMN_DATE);
+				string date = cursor.GetString(dateIndex);
+
+				scheduledTasks.Add(new ScheduledTask()
+				{
+					Id = id,
+					Name = name,
+					Date = date,
+				});
+			}
+
+			return scheduledTasks;
+		}
+
+		public void CreateScheduledTask(ScheduledTask scheduledTask)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			ContentValues values = new ContentValues();
+			values.Put(DB_SCHEDULED_TASK_COLUMN_NAME, scheduledTask.Name);
+			values.Put(DB_SCHEDULED_TASK_COLUMN_DATE, scheduledTask.Date);
+			db.Insert(DB_TABLE_SCHEDULED_TASK, null, values);
+			db.Close();
+		}
+
+		public void UpdateScheduledTask(ScheduledTask scheduledTask)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			ContentValues values = new ContentValues();
+			values.Put(DB_SCHEDULED_TASK_COLUMN_NAME, scheduledTask.Name);
+			values.Put(DB_SCHEDULED_TASK_COLUMN_DATE, scheduledTask.Date);
+			db.Update(DB_TABLE_SCHEDULED_TASK, values, $"{DB_SCHEDULED_TASK_COLUMN_ID} = ?", new string[] { scheduledTask.Id.ToString() });
+			db.Close();
+		}
+
+		public void DeleteScheduledTask(int id)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			db.Delete(DB_TABLE_SCHEDULED_TASK, $"{DB_SCHEDULED_TASK_COLUMN_ID} = ?", new string[] { id.ToString() });
+			db.Close();
+		}
+
+		#endregion Scheduled Task
 	}
 }

@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">My Tasks</string>
 	<string name="title_tasks">Tasks</string>
+	<string name="title_scheduled_tasks">Scheduled Tasks</string>
 	<string name="task_name">Bananas</string>
+	<string name="task_task_type_content_description">An image that identifies the task type.</string>
 	<string name="create_update_task_name">Name</string>
+	<string name="scheduled_task_name">Bananas</string>
+	<string name="scheduled_task_date">01/01/1999</string>
+	<string name="create_update_scheduled_task_name">Name</string>
+	<string name="create_update_scheduled_task_date">Date</string>
 </resources>
