@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+        android:id="@+id/navigation_tasks"
+		android:title="@string/title_tasks"
+        android:icon="@drawable/task_24" />
+
+</menu>
