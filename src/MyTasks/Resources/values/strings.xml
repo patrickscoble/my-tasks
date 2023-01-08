@@ -4,6 +4,7 @@
 	<string name="title_scheduled_tasks">Scheduled Tasks</string>
 	<string name="task_name">Bananas</string>
 	<string name="task_task_type_content_description">An image that identifies the task type.</string>
+	<string name="task_done">\u2713</string>
 	<string name="create_update_task_name">Name</string>
 	<string name="scheduled_task_name">Bananas</string>
 	<string name="scheduled_task_date">01/01/1999</string>

@@ -34,8 +34,8 @@ namespace MyTasks.Adapters
 			int resId = GetItemTypeImage(task.TaskType);
 			imageView.SetImageResource(resId);
 
-			CheckBox checkBox = view.FindViewById<CheckBox>(Resource.Id.task_done);
-			checkBox.Click += delegate
+			Button button = view.FindViewById<Button>(Resource.Id.task_done);
+			button.Click += delegate
 			{
 				if (task.TaskType == TaskTypeEnum.None)
 				{
