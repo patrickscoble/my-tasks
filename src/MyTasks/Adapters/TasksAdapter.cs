@@ -3,7 +3,7 @@ using Android.Views;
 using MyTasks.Enums;
 using MyTasks.Fragments;
 using MyTasks.Helpers;
-
+using MyTasks.Models;
 using Task = MyTasks.Models.Task;
 
 namespace MyTasks.Adapters
@@ -45,6 +45,12 @@ namespace MyTasks.Adapters
 				{
 					_dbHelper.DeleteScheduledTask(task.Id);
 				}
+				else if (task.TaskType == TaskTypeEnum.Recurring)
+				{
+					RecurringTask recurringtask = (RecurringTask)task;
+					recurringtask.LastCompletedDate = DateTime.Now.ToShortDateString();
+					_dbHelper.UpdateRecurringTask(recurringtask);
+				}
 
 				_tasksFragment.LoadData();
 
@@ -80,6 +86,7 @@ namespace MyTasks.Adapters
 		private int GetItemTypeImage(TaskTypeEnum taskType)
 		{
 			if (taskType == TaskTypeEnum.Scheduled) return Resource.Drawable.schedule_24;
+			if (taskType == TaskTypeEnum.Recurring) return Resource.Drawable.repeat_24;
 
 			return 0;
 		}

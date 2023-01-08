@@ -93,12 +93,18 @@ namespace MyTasks.Fragments
 
 		public override void LoadData()
 		{
-			List<Task> tasks = _dbHelper.GetAllTasks();
+			List<Task> allTasks = new List<Task>();
+
+			List<RecurringTask> recurringTasks = _dbHelper.GetAllRecurringTasks();
+			allTasks.AddRange(recurringTasks.Where(x => string.IsNullOrEmpty(x.LastCompletedDate) || Convert.ToDateTime(x.LastCompletedDate) < DateTime.Now.Date));
 
 			List<ScheduledTask> scheduledTasks = _dbHelper.GetAllScheduledTasks();
-			tasks.AddRange(scheduledTasks.Where(x => Convert.ToDateTime(x.Date) <= DateTime.Now));
+			allTasks.AddRange(scheduledTasks.Where(x => Convert.ToDateTime(x.Date) <= DateTime.Now.Date));
 
-			TaskAdapter taskAdapter = new TaskAdapter(this, tasks, _dbHelper);
+			List<Task> tasks = _dbHelper.GetAllTasks();
+			allTasks.AddRange(tasks);
+
+			TaskAdapter taskAdapter = new TaskAdapter(this, allTasks, _dbHelper);
 			ListView.Adapter = taskAdapter;
 		}
 	}

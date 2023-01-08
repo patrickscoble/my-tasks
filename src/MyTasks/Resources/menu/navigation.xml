@@ -11,4 +11,9 @@
 		android:title="@string/title_scheduled_tasks"
 		android:icon="@drawable/schedule_24" />
 
+	<item
+		android:id="@+id/navigation_recurring_tasks"
+		android:title="@string/title_recurring_tasks"
+		android:icon="@drawable/repeat_24" />
+
 </menu>
