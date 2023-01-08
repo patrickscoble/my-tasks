@@ -133,7 +133,7 @@ namespace MyTasks.Fragments
 
 		public override void LoadData()
 		{
-			List<ScheduledTask> scheduledTasks = _dbHelper.GetAllScheduledTasks();
+			List<ScheduledTask> scheduledTasks = _dbHelper.GetAllScheduledTasks().OrderBy(x => Convert.ToDateTime(x.Date)).ToList();
 			ScheduledTaskAdapter scheduledTaskAdapter = new ScheduledTaskAdapter(this, scheduledTasks);
 			ListView.Adapter = scheduledTaskAdapter;
 		}
