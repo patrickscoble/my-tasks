@@ -2,7 +2,9 @@ using Android.Content;
 using Android.Views;
 using AndroidX.Core.View;
 using MyTasks.Adapters;
-using MyTasks.Models;
+using MyTasks.Enums;
+
+using Task = MyTasks.Models.Task;
 
 using static Android.App.DatePickerDialog;
 
@@ -88,13 +90,14 @@ namespace MyTasks.Fragments
 			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_scheduled_task_name).Text;
 			string date = DateEditText.Text;
 
-			ScheduledTask scheduledTask = new ScheduledTask()
+			Task scheduledTask = new Task()
 			{
 				Name = name,
+				TaskType = TaskTypeEnum.Scheduled,
 				Date = date,
 			};
 
-			_dbHelper.CreateScheduledTask(scheduledTask);
+			_dbHelper.CreateTask(scheduledTask);
 			LoadData();
 		}
 
@@ -106,14 +109,14 @@ namespace MyTasks.Fragments
 			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_scheduled_task_name).Text;
 			string date = DateEditText.Text;
 
-			ScheduledTask scheduledTask = new ScheduledTask()
+			Task scheduledTask = new Task()
 			{
 				Id = Convert.ToInt32(id),
 				Name = name,
 				Date = date,
 			};
 
-			_dbHelper.UpdateScheduledTask(scheduledTask);
+			_dbHelper.UpdateTask(scheduledTask);
 			LoadData();
 		}
 
@@ -124,7 +127,7 @@ namespace MyTasks.Fragments
 			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_scheduled_task_id).Text;
 			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_scheduled_task_name).Text;
 
-			_dbHelper.DeleteScheduledTask(Convert.ToInt32(id));
+			_dbHelper.DeleteTask(Convert.ToInt32(id));
 			LoadData();
 
 			string text = $"{name} has been deleted";
@@ -133,7 +136,7 @@ namespace MyTasks.Fragments
 
 		public override void LoadData()
 		{
-			List<ScheduledTask> scheduledTasks = _dbHelper.GetAllScheduledTasks().OrderBy(x => Convert.ToDateTime(x.Date)).ToList();
+			List<Task> scheduledTasks = _dbHelper.GetTasksByTaskType(TaskTypeEnum.Scheduled).OrderBy(x => Convert.ToDateTime(x.Date)).ToList();
 			ScheduledTaskAdapter scheduledTaskAdapter = new ScheduledTaskAdapter(this, scheduledTasks);
 			ListView.Adapter = scheduledTaskAdapter;
 		}

@@ -2,7 +2,9 @@ using Android.Content;
 using Android.Views;
 using AndroidX.Core.View;
 using MyTasks.Adapters;
-using MyTasks.Models;
+using MyTasks.Enums;
+
+using Task = MyTasks.Models.Task;
 
 namespace MyTasks.Fragments
 {
@@ -63,13 +65,14 @@ namespace MyTasks.Fragments
 
 			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_recurring_task_name).Text;
 
-			RecurringTask recurringTask = new RecurringTask()
+			Task recurringTask = new Task()
 			{
 				Name = name,
+				TaskType = TaskTypeEnum.Recurring,
 				LastCompletedDate = string.Empty,
 			};
 
-			_dbHelper.CreateRecurringTask(recurringTask);
+			_dbHelper.CreateTask(recurringTask);
 			LoadData();
 		}
 
@@ -79,16 +82,16 @@ namespace MyTasks.Fragments
 
 			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_recurring_task_id).Text;
 			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_recurring_task_name).Text;
-			string date = alertDialog.FindViewById<TextView>(Resource.Id.create_update_recurring_task_last_completed_date).Text;
+			string lastCompletedDate = alertDialog.FindViewById<TextView>(Resource.Id.create_update_recurring_task_last_completed_date).Text;
 
-			RecurringTask recurringTask = new RecurringTask()
+			Task recurringTask = new Task()
 			{
 				Id = Convert.ToInt32(id),
 				Name = name,
-				LastCompletedDate = date,
+				LastCompletedDate = lastCompletedDate,
 			};
 
-			_dbHelper.UpdateRecurringTask(recurringTask);
+			_dbHelper.UpdateTask(recurringTask);
 			LoadData();
 		}
 
@@ -99,7 +102,7 @@ namespace MyTasks.Fragments
 			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_recurring_task_id).Text;
 			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_recurring_task_name).Text;
 
-			_dbHelper.DeleteRecurringTask(Convert.ToInt32(id));
+			_dbHelper.DeleteTask(Convert.ToInt32(id));
 			LoadData();
 
 			string text = $"{name} has been deleted";
@@ -108,7 +111,7 @@ namespace MyTasks.Fragments
 
 		public override void LoadData()
 		{
-			List<RecurringTask> recurringTasks = _dbHelper.GetAllRecurringTasks();
+			List<Task> recurringTasks = _dbHelper.GetTasksByTaskType(TaskTypeEnum.Recurring);
 			RecurringTaskAdapter recurringTaskAdapter = new RecurringTaskAdapter(this, recurringTasks);
 			ListView.Adapter = recurringTaskAdapter;
 		}

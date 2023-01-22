@@ -2,7 +2,7 @@ using Android.Content;
 using Android.Views;
 using AndroidX.Core.View;
 using MyTasks.Adapters;
-using MyTasks.Models;
+using MyTasks.Enums;
 
 using Task = MyTasks.Models.Task;
 
@@ -68,6 +68,7 @@ namespace MyTasks.Fragments
 			Task task = new Task()
 			{
 				Name = name,
+				TaskType = TaskTypeEnum.None,
 			};
 
 			_dbHelper.CreateTask(task);
@@ -93,16 +94,12 @@ namespace MyTasks.Fragments
 
 		public override void LoadData()
 		{
+			List<Task> tasks = _dbHelper.GetAllTasks().Where(x => x.TaskType == TaskTypeEnum.None)
+
 			List<Task> allTasks = new List<Task>();
-
-			List<RecurringTask> recurringTasks = _dbHelper.GetAllRecurringTasks();
-			allTasks.AddRange(recurringTasks.Where(x => string.IsNullOrEmpty(x.LastCompletedDate) || Convert.ToDateTime(x.LastCompletedDate) < DateTime.Now.Date));
-
-			List<ScheduledTask> scheduledTasks = _dbHelper.GetAllScheduledTasks();
-			allTasks.AddRange(scheduledTasks.Where(x => Convert.ToDateTime(x.Date) <= DateTime.Now.Date));
-
-			List<Task> tasks = _dbHelper.GetAllTasks();
-			allTasks.AddRange(tasks);
+			allTasks.AddRange(tasks.Where(x => x.TaskType == TaskTypeEnum.Recurring && (string.IsNullOrEmpty(x.LastCompletedDate) || Convert.ToDateTime(x.LastCompletedDate) < DateTime.Now.Date)));
+			allTasks.AddRange(tasks.Where(x => x.TaskType == TaskTypeEnum.Scheduled && Convert.ToDateTime(x.Date) <= DateTime.Now.Date));
+			allTasks.AddRange(tasks.Where(x => x.TaskType == TaskTypeEnum.None));
 
 			TaskAdapter taskAdapter = new TaskAdapter(this, allTasks, _dbHelper);
 			ListView.Adapter = taskAdapter;

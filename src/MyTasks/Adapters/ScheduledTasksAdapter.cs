@@ -1,15 +1,16 @@
 using Android.Content;
 using Android.Views;
 using MyTasks.Fragments;
-using MyTasks.Models;
+
+using Task = MyTasks.Models.Task;
 
 namespace MyTasks.Adapters
 {
-	internal class ScheduledTaskAdapter : BaseAdapter<ScheduledTask>
+	internal class ScheduledTaskAdapter : BaseAdapter<Task>
 	{
 		private ScheduledTasksFragment _scheduledTasksFragment;
 
-		public ScheduledTaskAdapter(ScheduledTasksFragment scheduledTasksFragment, List<ScheduledTask> scheduledTasks)
+		public ScheduledTaskAdapter(ScheduledTasksFragment scheduledTasksFragment, List<Task> scheduledTasks)
 			: base(scheduledTasks)
 		{
 			this._scheduledTasksFragment = scheduledTasksFragment;
@@ -20,7 +21,7 @@ namespace MyTasks.Adapters
 			LayoutInflater inflater = (LayoutInflater)_scheduledTasksFragment.Activity.GetSystemService(Context.LayoutInflaterService);
 			View view = inflater.Inflate(Resource.Layout.scheduled_task, null);
 
-			ScheduledTask scheduledTask = Tasks[position];
+			Task scheduledTask = Tasks[position];
 
 			view.FindViewById<TextView>(Resource.Id.scheduled_task_name).Text = scheduledTask.Name;
 			view.FindViewById<TextView>(Resource.Id.scheduled_task_date).Text = scheduledTask.Date;

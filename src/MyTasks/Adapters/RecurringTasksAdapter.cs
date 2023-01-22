@@ -2,15 +2,16 @@ using Android.Content;
 using Android.Provider;
 using Android.Views;
 using MyTasks.Fragments;
-using MyTasks.Models;
+
+using Task = MyTasks.Models.Task;
 
 namespace MyTasks.Adapters
 {
-	internal class RecurringTaskAdapter : BaseAdapter<RecurringTask>
+	internal class RecurringTaskAdapter : BaseAdapter<Task>
 	{
 		private RecurringTasksFragment _recurringTasksFragment;
 
-		public RecurringTaskAdapter(RecurringTasksFragment recurringTasksFragment, List<RecurringTask> recurringTasks)
+		public RecurringTaskAdapter(RecurringTasksFragment recurringTasksFragment, List<Task> recurringTasks)
 			: base(recurringTasks)
 		{
 			this._recurringTasksFragment = recurringTasksFragment;
@@ -21,7 +22,7 @@ namespace MyTasks.Adapters
 			LayoutInflater inflater = (LayoutInflater)_recurringTasksFragment.Activity.GetSystemService(Context.LayoutInflaterService);
 			View view = inflater.Inflate(Resource.Layout.recurring_task, null);
 
-			RecurringTask recurringTask = Tasks[position];
+			Task recurringTask = Tasks[position];
 
 			view.FindViewById<TextView>(Resource.Id.recurring_task_name).Text = recurringTask.Name;
 
