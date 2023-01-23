@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
+		android:id="@+id/navigation_to_do"
+		android:title="@string/navigation_to_do"
+		android:icon="@drawable/list_24" />
+
+	<item
         android:id="@+id/navigation_tasks"
-		android:title="@string/title_tasks"
+		android:title="@string/navigation_tasks"
         android:icon="@drawable/task_24" />
 
 	<item
 		android:id="@+id/navigation_scheduled_tasks"
-		android:title="@string/title_scheduled_tasks"
+		android:title="@string/navigation_scheduled"
 		android:icon="@drawable/schedule_24" />
 
 	<item
 		android:id="@+id/navigation_recurring_tasks"
-		android:title="@string/title_recurring_tasks"
+		android:title="@string/navigation_recurring"
 		android:icon="@drawable/repeat_24" />
 
 </menu>

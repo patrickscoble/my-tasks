@@ -16,7 +16,7 @@ namespace MyTasks
 		{
 			base.OnCreate(savedInstanceState);
 
-			SupportFragmentManager.BeginTransaction().Add(Resource.Id.container, new TasksFragment(), "tasksFragment").Commit();
+			SupportFragmentManager.BeginTransaction().Add(Resource.Id.container, new ToDosFragment(), "toDosFragment").Commit();
 
 			// Set our view from the "main" layout resource
 			SetContentView(Resource.Layout.activity_main);
@@ -31,6 +31,12 @@ namespace MyTasks
 		{
 			switch (item.ItemId)
 			{
+				case Resource.Id.navigation_to_do:
+				{
+					SupportFragmentManager.BeginTransaction().Replace(Resource.Id.container, new ToDosFragment(), "toDosFragment").Commit();
+					return true;
+				}
+
 				case Resource.Id.navigation_tasks:
 				{
 					SupportFragmentManager.BeginTransaction().Replace(Resource.Id.container, new TasksFragment(), "tasksFragment").Commit();

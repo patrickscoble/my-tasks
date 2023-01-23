@@ -1,11 +1,19 @@
 <resources>
 	<string name="app_name">My Tasks</string>
+	<string name="navigation_to_do">To Do</string>
+	<string name="navigation_tasks">Tasks</string>
+	<string name="navigation_scheduled">Scheduled</string>
+	<string name="navigation_recurring">Recurring</string>
+	<string name="title_to_do">To Do</string>
 	<string name="title_tasks">Tasks</string>
 	<string name="title_scheduled_tasks">Scheduled Tasks</string>
 	<string name="title_recurring_tasks">Recurring Tasks</string>
+	<string name="to_do_task_name">Bananas</string>
+	<string name="to_do_task_subtasks_content_description">An image that identifies whether a task has subtasks.</string>
+	<string name="to_do_task_task_type_content_description">An image that identifies the task type.</string>
+	<string name="to_do_task_done">\u2713</string>
+	<string name="to_do_subtask_name">Bananas and Strawberries</string>
 	<string name="task_name">Bananas</string>
-	<string name="task_task_type_content_description">An image that identifies the task type.</string>
-	<string name="task_done">\u2713</string>
 	<string name="create_update_task_name">Name</string>
 	<string name="scheduled_task_name">Bananas</string>
 	<string name="scheduled_task_date">01/01/1999</string>
@@ -14,4 +22,7 @@
 	<string name="recurring_task_name">Bananas, Apples and Blackberries</string>
 	<string name="recurring_task_last_completed_date">Last Completed 01/01/1999</string>
 	<string name="create_update_recurring_task_name">Name</string>
+	<string name="subtask_name">Bananas, Apples and Blackberries</string>
+	<string name="subtask_last_completed_date">Last Completed 01/01/1999</string>
+	<string name="create_update_subtask_name">Name</string>
 </resources>

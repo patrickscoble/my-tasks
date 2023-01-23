@@ -1,6 +1,7 @@
 using Android.Content;
 using Android.Views;
 using MyTasks.Fragments;
+using Newtonsoft.Json;
 
 using Task = MyTasks.Models.Task;
 
@@ -28,29 +29,12 @@ namespace MyTasks.Adapters
 
 			view.Click += delegate
 			{
-				LayoutInflater layoutInflater = LayoutInflater.From(_scheduledTasksFragment.Activity);
-				View view = layoutInflater.Inflate(Resource.Layout.create_update_scheduled_task, null);
+				SubtasksFragment subtasksfragment = new SubtasksFragment();
+				Bundle bundle = new Bundle();
+				bundle.PutString("@string/task", JsonConvert.SerializeObject(scheduledTask));
+				subtasksfragment.Arguments = bundle;
 
-				_scheduledTasksFragment.DateEditText = view.FindViewById<EditText>(Resource.Id.create_update_scheduled_task_date);
-				_scheduledTasksFragment.DateEditText.Text = DateTime.Now.ToShortDateString();
-				_scheduledTasksFragment.DateEditText.Click += delegate
-				{
-					_scheduledTasksFragment.OnClickDateEditText();
-				};
-
-				AlertDialog.Builder builder = new AlertDialog.Builder(_scheduledTasksFragment.Activity);
-				builder.SetTitle("Update Scheduled Task");
-				builder.SetView(view);
-				builder.SetPositiveButton("Update", _scheduledTasksFragment.UpdateScheduledTaskAction);
-				builder.SetNeutralButton("Delete", _scheduledTasksFragment.DeleteScheduledTaskAction);
-				builder.SetNegativeButton("Cancel", _scheduledTasksFragment.CancelAction);
-
-				// Prepopulate the fields.
-				view.FindViewById<TextView>(Resource.Id.create_update_scheduled_task_id).Text = scheduledTask.Id.ToString();
-				view.FindViewById<TextView>(Resource.Id.create_update_scheduled_task_name).Text = scheduledTask.Name;
-				view.FindViewById<TextView>(Resource.Id.create_update_scheduled_task_date).Text = scheduledTask.Date.ToString();
-
-				builder.Show();
+				_scheduledTasksFragment.Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.container, subtasksfragment, "subtasksFragment").AddToBackStack("scheduledTasksFragment").Commit();
 			};
 
 			return view;

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<item
+	  android:id="@+id/action_edit"
+	  android:icon="@drawable/edit_24"
+	  android:title="Update Task"
+	  app:showAsAction="always" />
+
+	<item
+	  android:id="@+id/action_add"
+	  android:icon="@drawable/add_24"
+	  android:title="Create Subtask"
+	  app:showAsAction="always" />
+
+</menu>

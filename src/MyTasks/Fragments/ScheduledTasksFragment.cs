@@ -14,12 +14,6 @@ namespace MyTasks.Fragments
 	{
 		internal EditText DateEditText;
 
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-			Activity.Title = Resources.GetString(Resource.String.title_scheduled_tasks);
-		}
-
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
@@ -32,7 +26,7 @@ namespace MyTasks.Fragments
 		public override void OnDestroyView()
 		{
 			Activity.RemoveMenuProvider(this);
-			base.OnDestroy();
+			base.OnDestroyView();
 		}
 
 		internal void OnClickDateEditText()
@@ -101,41 +95,10 @@ namespace MyTasks.Fragments
 			LoadData();
 		}
 
-		public void UpdateScheduledTaskAction(object sender, DialogClickEventArgs e)
-		{
-			AlertDialog alertDialog = (AlertDialog)sender;
-
-			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_scheduled_task_id).Text;
-			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_scheduled_task_name).Text;
-			string date = DateEditText.Text;
-
-			Task scheduledTask = new Task()
-			{
-				Id = Convert.ToInt32(id),
-				Name = name,
-				Date = date,
-			};
-
-			_dbHelper.UpdateTask(scheduledTask);
-			LoadData();
-		}
-
-		public void DeleteScheduledTaskAction(object sender, DialogClickEventArgs e)
-		{
-			AlertDialog alertDialog = (AlertDialog)sender;
-
-			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_scheduled_task_id).Text;
-			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_scheduled_task_name).Text;
-
-			_dbHelper.DeleteTask(Convert.ToInt32(id));
-			LoadData();
-
-			string text = $"{name} has been deleted";
-			Toast.MakeText(Activity.Application, text, ToastLength.Short).Show();
-		}
-
 		public override void LoadData()
 		{
+			Activity.Title = Resources.GetString(Resource.String.title_scheduled_tasks);
+
 			List<Task> scheduledTasks = _dbHelper.GetTasksByTaskType(TaskTypeEnum.Scheduled).OrderBy(x => Convert.ToDateTime(x.Date)).ToList();
 			ScheduledTaskAdapter scheduledTaskAdapter = new ScheduledTaskAdapter(this, scheduledTasks);
 			ListView.Adapter = scheduledTaskAdapter;

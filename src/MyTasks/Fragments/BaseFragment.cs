@@ -15,7 +15,13 @@ namespace MyTasks.Fragments
 			base.OnViewCreated(view, savedInstanceState);
 			LoadData();
 		}
-		
+
+		public override void OnResume()
+		{
+			base.OnResume();
+			LoadData();
+		}
+
 		public void CancelAction(object sender, DialogClickEventArgs e)
 		{
 		}
